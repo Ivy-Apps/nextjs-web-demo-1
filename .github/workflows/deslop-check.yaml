@@ -1,0 +1,15 @@
+name: Deslop Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deslop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ivy-apps/deslop-action@v1
+        with:
+          mode: check
