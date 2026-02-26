@@ -10,7 +10,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ivy-apps/deslop-action@v1
+      - uses: ivy-apps/deslop-action@v1.0.1
         with:
           mode: fix
           gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
