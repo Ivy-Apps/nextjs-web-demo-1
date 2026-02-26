@@ -1,3 +1,15 @@
+# Copy this file to your repo as .github/workflows/deslop-fix.yaml
+#
+# Uses the latest action from the default branch (@main). For a pinned version use @v1 or @v1.0.0.
+#
+# Triggers:
+# 1. Manual: Actions tab → Deslop Fix → Run workflow.
+# 2. PR comment: comment "@deslop fix" on a PR to run fixes on that PR's branch;
+#    the action will comment on that PR with a link to the fix PR.
+#
+# Required: In repo Settings → Actions → General, set "Workflow permissions"
+# to "Read and write permissions".
+
 name: Deslop Fix
 
 on:
@@ -16,9 +28,19 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Get PR head ref
+        if: github.event_name == 'issue_comment'
+        id: pr
+        run: |
+          HEAD_REF=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q '.headRefName')
+          echo "ref=refs/heads/${HEAD_REF}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - uses: ivy-apps/deslop-action@main
         with:
           mode: fix
+          ref: ${{ steps.pr.outputs.ref }}
           triggering-pr-number: ${{ github.event_name == 'issue_comment' && github.event.issue.number || '' }}
           # Optional: for next-intl translations, add a repo secret (e.g. GEMINI_API_KEY) and use:
           # gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
