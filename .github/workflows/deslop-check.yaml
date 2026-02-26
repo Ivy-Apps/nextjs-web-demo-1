@@ -10,6 +10,6 @@ jobs:
   deslop:
     runs-on: ubuntu-latest
     steps:
-      - uses: ivy-apps/deslop-action@v1
+      - uses: ivy-apps/deslop-action@v1.0.1
         with:
           mode: check
